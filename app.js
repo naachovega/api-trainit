@@ -19,5 +19,3 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`API Listening on port: ${port}`);
 });
-
-"test"
