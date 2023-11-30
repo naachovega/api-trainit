@@ -1,4 +1,7 @@
 import { MongoClient } from "mongodb";
+import pkg from "dotenv";
+const { dotenv } = pkg;
+const result = pkg.config();
 
 export default class StorageConnection {
   constructor(collection) {
