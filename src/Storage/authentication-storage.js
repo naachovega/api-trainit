@@ -5,8 +5,8 @@ export class AuthenticationStorage {
     this.storage = new StorageConnection("User");
     this.collection = this.storage.getCollection();
   }
-  async createUser(email, password) {
-    console.log(email, password);
+  async createUserByEmail(user) {
+    this.collection.insertOne(user);
   }
 
   async deleteUser(email, password) {}
