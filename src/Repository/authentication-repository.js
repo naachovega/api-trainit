@@ -1,12 +1,11 @@
-import { AuthenticationStorage } from "../Storage/authentication-storage.js";
 import { authStorage } from "../Storage/index.js";
 
 export class AuthenticationRepository {
   constructor() {
     this.storage = authStorage;
   }
-  createUser(email, password) {
-    this.storage.createUser(email, password);
+  async createUserByEmail(user) {
+    return await this.storage.createUserByEmail(user);
   }
 
   deleteUser(email, password) {
