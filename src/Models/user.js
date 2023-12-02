@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid'
 
 export default class User {
-    constructor(_id, name, lastName, birthdate, email, socialMediaId, picture, role, credential) {
+    constructor(_id, name, lastName, birthdate, email, socialMediaId, picture, credential) {
         this._id = _id != undefined || "" ? _id : uuid()
         this.name = name
         this.lastName = lastName
@@ -10,7 +10,6 @@ export default class User {
         this.socialMediaId = socialMediaId
         this.registered = false
         this.picture = picture
-        this.role = role
         this.interests = []
         this.bio = ''
         this.gymMemberships = []

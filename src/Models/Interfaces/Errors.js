@@ -1,4 +1,4 @@
-class CreatingError extends Error {
+class CustomError extends Error {
   constructor(message, code, stackErrorMessage) {
     this.message = message;
     this.code = code;
@@ -6,4 +6,4 @@ class CreatingError extends Error {
   }
 }
 
-export { CreatingError };
+export { CustomError };
