@@ -1,41 +1,50 @@
 import express from "express";
-import { createUserByEmail } from "../Controller/index.js";
-
+import { createUserByEmail, getUserByEmail } from "../Controller/index.js";
 import { authRepository } from "../Repository/index.js";
+import { CustomError } from "../Models/Interfaces/Errors.js";
 
 const authRouter = express.Router();
 
 authRouter.post("/register", async (req, res) => {
-  const { email, password } = req.body;
+  try {
 
-  // validar que no exista este email previamente
+    const { email, password } = req.body;
 
-  const err = await createUserByEmail(email, password);
+    const { user, err } = await getUserByEmail(email);
 
-  if (err) {
-    if (err.code === 500) {
-      res
-        .json({
-          message: err.message,
-          stackErrorMessage: err.stackErrorMessage,
-          code: err.code,
-        })
-        .status(err.code);
+    if (err) {
+      throw new CustomError(err.message, err.code, err.stackErrorMessage)
     }
-  }
-  
-  res
-    .json({
+
+    if (user) {
+      return res.json({
+        message: "User already exists.",
+        code: 409,
+      }).status(409);
+    }
+
+    err = await createUserByEmail(email, password);
+
+    if (err) {
+      throw new CustomError(err.message, err.code, err.stackErrorMessage)
+    }
+
+    return res.json({
       message: "The user was created OK",
       code: 201,
-    })
-    .status(201);
+    }).status(201);
+
+  } catch (err) {
+    return res.json({
+      message: err.message,
+      code: err.code,
+      stackErrorMessage: err.stackErrorMessage,
+    }).status(err.code);
+  }
 });
 
 authRouter.get("/sign-in", (req, res) => {
-  const { email, password } = req.body;
-  authRepository.signIn(email, password);
-  res.send("Signed in").status(200);
+  const { email, password } = req.body
 });
 
 export default authRouter;
