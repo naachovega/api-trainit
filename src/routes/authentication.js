@@ -1,6 +1,5 @@
 import express from "express";
 import { createUserByEmail, getUserByEmail } from "../Controller/index.js";
-import { authRepository } from "../Repository/index.js";
 import { CustomError } from "../Models/Interfaces/Errors.js";
 
 const authRouter = express.Router();
