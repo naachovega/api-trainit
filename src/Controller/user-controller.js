@@ -1,3 +1,4 @@
+import { CustomError } from "../Models/Interfaces/Errors.js"
 import { userRepository } from "../Repository/index.js"
 
 async function getUserByEmail(email) {
@@ -5,7 +6,7 @@ async function getUserByEmail(email) {
     try {
         const user = await userRepository.getUserByEmail(email)
 
-        if (user) {
+        if (user.length > 0) {
             return {
                 user: user,
                 err: new CustomError(
@@ -17,6 +18,7 @@ async function getUserByEmail(email) {
         }
         return { user: user }
     } catch (err) {
+        console.log(err)
         return {
             err: new CustomError(
                 "There was a problem fetching the user",

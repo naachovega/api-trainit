@@ -9,22 +9,22 @@ authRouter.post("/register", async (req, res) => {
 
     const { email, password } = req.body;
 
-    const { user, err } = await getUserByEmail(email);
+    const { user, getUserErr } = await getUserByEmail(email);
 
-    if (err) {
+    if (getUserErr) {
       throw new CustomError(err.message, err.code, err.stackErrorMessage)
     }
 
-    if (user) {
+    if (user.length > 0) {
       return res.json({
         message: "User already exists.",
         code: 409,
       }).status(409);
     }
 
-    err = await createUserByEmail(email, password);
+    let createErr = await createUserByEmail(email, password);
 
-    if (err) {
+    if (createErr) {
       throw new CustomError(err.message, err.code, err.stackErrorMessage)
     }
 
@@ -34,6 +34,7 @@ authRouter.post("/register", async (req, res) => {
     }).status(201);
 
   } catch (err) {
+
     return res.json({
       message: err.message,
       code: err.code,

@@ -4,8 +4,8 @@ export class UserRepository {
     constructor() {
         this.storage = userStorage;
     }
-    async getUserByEmail(email) {
-        return await this.storage.getUserByEmail(email)
+    getUserByEmail(email) {
+        return this.storage.getUserByEmail(email)
     }
 
     async createUserByEmail(user) {
