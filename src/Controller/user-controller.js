@@ -1,4 +1,4 @@
-import { userRepository } from "../Repository"
+import { userRepository } from "../Repository/index.js"
 
 async function getUserByEmail(email) {
 
