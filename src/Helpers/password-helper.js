@@ -11,8 +11,6 @@ function hashPassword(password) {
     `sha512`
   ).toString(`hex`);
 
-  console.log(hash, salt);
-
   const returnObject = {
     hash: hash,
     salt: salt,

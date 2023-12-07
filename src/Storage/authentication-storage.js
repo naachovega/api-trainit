@@ -14,6 +14,8 @@ export class AuthenticationStorage {
   async signIn(email, password) { }
 
   async getUserByEmail(email) {
-    return await this.collection.find({ email: email }).toArray(0)
+    const user = await this.collection.find({ username: email }).toArray(0)
+
+    return user
   }
 }

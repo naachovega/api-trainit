@@ -1,5 +1,5 @@
 import express from "express";
-import { createUserByEmail, getUserByEmail } from "../Controller/index.js";
+import { createUserByEmail, getUsersCredential } from "../Controller/index.js";
 import { CustomError } from "../Models/Interfaces/Errors.js";
 
 const authRouter = express.Router();
@@ -9,7 +9,7 @@ authRouter.post("/register", async (req, res) => {
 
     const { email, password } = req.body;
 
-    const { user, getUserErr } = await getUserByEmail(email);
+    const { user, getUserErr } = await getUsersCredential(email);
 
     if (getUserErr) {
       throw new CustomError(err.message, err.code, err.stackErrorMessage)

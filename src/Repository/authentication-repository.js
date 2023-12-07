@@ -8,6 +8,10 @@ export class AuthenticationRepository {
     return await this.storage.createUserByEmail(user);
   }
 
+  async getUserByEmail(email) {
+    return this.storage.getUserByEmail(email)
+  }
+
   deleteUser(email, password) {
     this.storage.deleteUser(email, password);
   }
