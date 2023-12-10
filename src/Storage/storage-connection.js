@@ -6,7 +6,7 @@ const result = pkg.config();
 export default class StorageConnection {
   constructor(collection) {
     this.connection = process.env.MONGOCONNECTION;
-    this.dbName = process.env.MONGOUSER;
+    this.dbName = process.env.MONGODB;
     this.collectionName = collection;
     this.client = new MongoClient(this.connection);
     this.connect();
