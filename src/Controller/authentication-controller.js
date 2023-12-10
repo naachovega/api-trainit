@@ -33,18 +33,7 @@ async function createUserByEmail(email, password) {
 async function getUsersCredential(email) {
   try {
     const user = await authRepository.getUserByEmail(email);
-
-    if (user.length > 0) {
-      return {
-        user: user,
-        err: new CustomError(
-          "The user already exists",
-          409,
-          "The user already exists"
-        ),
-      };
-    }
-    return { user: user };
+    return user;
   } catch (err) {
     return {
       err: new CustomError(
