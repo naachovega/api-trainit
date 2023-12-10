@@ -9,7 +9,7 @@ export class AuthenticationRepository {
   }
 
   async getUserByEmail(email) {
-    return this.storage.getUserByEmail(email)
+    return this.storage.getUserByEmail(email);
   }
 
   deleteUser(email, password) {
@@ -19,4 +19,5 @@ export class AuthenticationRepository {
   signIn(email, password) {
     this.storage.signIn(email, password);
   }
+
 }
