@@ -1,4 +1,4 @@
-import { createUserByEmail, getUsersCredential } from "./authentication-controller.js";
+import { createUserByEmail, getUsersCredential, finishRegister } from "./authentication-controller.js";
 import { getUserByEmail } from "./user-controller.js";
 
-export { createUserByEmail, getUserByEmail, getUsersCredential };
+export { createUserByEmail, getUserByEmail, getUsersCredential, finishRegister };

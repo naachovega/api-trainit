@@ -1,31 +1,27 @@
 import { v4 } from "uuid";
-import { hashPassword } from "../Helpers/password-helper.js";
+import { hashPassword, generateCredential } from "../Helpers/index.js";
 import { CustomError } from "../Models/Interfaces/Errors.js";
 import UserCredential from "../Models/user-credential.js";
+import { UserDTO } from "../Models/user-infoDTO.js";
 import User from "../Models/user.js";
 import { authRepository, userRepository } from "../Repository/index.js";
 
 async function createUserByEmail(email, password) {
   try {
-
     const { hash, salt } = hashPassword(password);
 
     const _id = v4();
 
     const userCredential = new UserCredential(_id, email, hash, salt);
 
-    //ver la mejor manera para estructurar esto
-    // agregar el repositorio, storage y creacion del usuario en la colleccion del usuario
-    const user = new User(_id, "", "", undefined, email, undefined, undefined, "credential");
+    const user = new User(_id, email, generateCredential());
 
     await authRepository.createUserByEmail(userCredential);
 
-    await userRepository.createUserByEmail(user)
+    await userRepository.createUserByEmail(user);
 
-    return
-
+    return;
   } catch (error) {
-
     return new CustomError(
       "There was a problem creating the user.",
       500,
@@ -36,7 +32,7 @@ async function createUserByEmail(email, password) {
 
 async function getUsersCredential(email) {
   try {
-    const user = await authRepository.getUserByEmail(email)
+    const user = await authRepository.getUserByEmail(email);
 
     if (user.length > 0) {
       return {
@@ -44,21 +40,45 @@ async function getUsersCredential(email) {
         err: new CustomError(
           "The user already exists",
           409,
-          "The user already exists",
-        )
-      }
+          "The user already exists"
+        ),
+      };
     }
-    return { user: user }
+    return { user: user };
   } catch (err) {
-
     return {
       err: new CustomError(
         "There was a problem fetching the user",
         500,
-        err.message,
-      )
-    }
+        err.message
+      ),
+    };
   }
 }
 
-export { createUserByEmail, getUsersCredential };
+async function finishRegister(request) {
+  try {
+    const { _id, name, lastName, birthdate, interests } = request.body;
+
+    const userDTO = new UserDTO(name, lastName, birthdate, interests, "", true);
+
+    const modified = await userRepository.finishRegister(_id, userDTO);
+
+    if (modified.modifiedCount == 0) {
+      return new CustomError(
+        "No information was updated.",
+        400,
+        "No information was updated."
+      );
+    }
+  } catch (error) {
+
+    return new CustomError(
+      "There was a problem updating the information.",
+      500,
+      error.message
+    );
+  }
+}
+
+export { createUserByEmail, getUsersCredential, finishRegister };
