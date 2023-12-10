@@ -60,7 +60,7 @@ async function finishRegister(request) {
   try {
     const { _id, name, lastName, birthdate, interests } = request.body;
 
-    const userDTO = new UserDTO(name, lastName, birthdate, interests, "", true);
+    const userDTO = new UserDTO(name, lastName, birthdate, interests, true);
 
     const modified = await userRepository.finishRegister(_id, userDTO);
 
@@ -72,7 +72,6 @@ async function finishRegister(request) {
       );
     }
   } catch (error) {
-
     return new CustomError(
       "There was a problem updating the information.",
       500,
