@@ -5,7 +5,7 @@ import {
   finishRegister,
 } from "../Controller/index.js";
 import { CustomError } from "../Models/Interfaces/Errors.js";
-import { userRepository } from "../Repository/index.js";
+
 const authRouter = express.Router();
 
 authRouter.post("/register", async (req, res) => {
