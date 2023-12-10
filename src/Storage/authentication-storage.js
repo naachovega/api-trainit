@@ -9,13 +9,14 @@ export class AuthenticationStorage {
     this.collection.insertOne(user);
   }
 
-  async deleteUser(email, password) { }
+  async deleteUser(email, password) {}
 
-  async signIn(email, password) { }
+  async signIn(email, password) {}
 
   async getUserByEmail(email) {
-    const user = await this.collection.find({ username: email }).toArray(0)
+    const user = await this.collection.find({ username: email }).toArray(0);
 
-    return user
+    return user;
   }
+
 }
