@@ -29,4 +29,63 @@ function alreadyRegisteredMiddleware(req, res, next) {
   return next();
 }
 
-export { apiKeyMiddleware, alreadyRegisteredMiddleware };
+function validateEmailMiddleware(req, res, next) {
+  const { email } = req.body;
+  const emailRegex = new RegExp(
+    /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+    "gm"
+  );
+
+  if (!email) {
+    return res
+      .json({
+        message: "Email can't be empty",
+        code: 400,
+      })
+      .status(400);
+  }
+  if (!emailRegex.test(email)) {
+    return res
+      .json({
+        message: "Please enter a valid Email",
+        code: 400,
+      })
+      .status(400);
+  }
+
+  return next();
+}
+
+function validatePasswordMiddleware(req, res, next) {
+  const { password } = req.body;
+
+  const passwordRegexLength = new RegExp(
+    /^[a-zA-Z0-9!@#\$%\^\&*\?\)\(+=._-]{6,}$/g
+  );
+
+  if (!password) {
+    return res
+      .json({
+        message: "Password cant be empty",
+        code: 400,
+      })
+      .status(400);
+  }
+
+  if (!passwordRegexLength.test(password)) {
+    return res
+      .json({
+        message: "Invalid Password",
+        code: 400,
+      })
+      .status(400);
+  }
+
+  return next();
+}
+export {
+  apiKeyMiddleware,
+  alreadyRegisteredMiddleware,
+  validateEmailMiddleware,
+  validatePasswordMiddleware,
+};

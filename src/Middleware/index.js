@@ -1,6 +1,8 @@
 import {
   apiKeyMiddleware,
   alreadyRegisteredMiddleware,
+  validateEmailMiddleware,
+  validatePasswordMiddleware,
 } from "./authentication-middleware.js";
 
 import { errorMiddelware, notFoundMiddlware } from "./error-middleware.js";
@@ -17,4 +19,6 @@ export {
   errorMiddelware,
   notFoundMiddlware,
   alreadyRegisteredMiddleware,
+  validateEmailMiddleware,
+  validatePasswordMiddleware,
 };
