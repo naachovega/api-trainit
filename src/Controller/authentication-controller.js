@@ -1,5 +1,9 @@
 import { v4 } from "uuid";
-import { hashPassword, generateCredential } from "../Helpers/index.js";
+import {
+  hashPassword,
+  generateCredential,
+  validatePassowrd,
+} from "../Helpers/index.js";
 import { CustomError } from "../Models/Interfaces/Errors.js";
 import UserCredential from "../Models/user-credential.js";
 import { UserDTO } from "../Models/user-infoDTO.js";
@@ -69,4 +73,23 @@ async function finishRegister(request) {
   }
 }
 
-export { createUserByEmail, getUsersCredential, finishRegister };
+async function signIn(email, password) {
+  try {
+    const user = await getUsersCredential(email);
+
+    const stringPassword = password.toString();
+
+    validatePassowrd(stringPassword, user[0].salt, user[0].hash);
+    return { user: user, err: null };
+  } catch (error) {
+    return {
+      user: null,
+      err: {
+        errMessage: error.message,
+        code: 500,
+      },
+    };
+  }
+}
+
+export { createUserByEmail, getUsersCredential, finishRegister, signIn };
