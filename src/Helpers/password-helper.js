@@ -18,4 +18,10 @@ function hashPassword(password) {
   return returnObject;
 }
 
-export { hashPassword };
+function validatePassowrd(password, salt, hashedPassword) {
+  const hash = pbkdf2Sync(password, salt, 1000, 64, `sha512`).toString(`hex`);
+
+  return hash === hashedPassword;
+}
+
+export { hashPassword, validatePassowrd };
