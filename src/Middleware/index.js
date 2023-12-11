@@ -3,22 +3,26 @@ import {
   alreadyRegisteredMiddleware,
   validateEmailMiddleware,
   validatePasswordMiddleware,
+  validateSignInMiddleware,
 } from "./authentication-middleware.js";
 
 import { errorMiddelware, notFoundMiddlware } from "./error-middleware.js";
 
 import {
-  userExistMiddleware,
   userDoesNotExistMiddleware,
+  userExistByEmailMiddleware,
+  userExistByIdMiddleware,
 } from "./user-middleware.js";
 
 export {
   apiKeyMiddleware,
-  userExistMiddleware,
+  userExistByEmailMiddleware,
   userDoesNotExistMiddleware,
   errorMiddelware,
   notFoundMiddlware,
   alreadyRegisteredMiddleware,
   validateEmailMiddleware,
   validatePasswordMiddleware,
+  validateSignInMiddleware,
+  userExistByIdMiddleware,
 };

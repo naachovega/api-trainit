@@ -1,8 +1,25 @@
 import { userRepository } from "../Repository/index.js";
 
-async function userExistMiddleware(req, res, next) {
+async function userExistByIdMiddleware(req, res, next) {
   const { _id } = req.body;
   const user = await userRepository.getUserById(_id);
+
+  if (user.length === 0) {
+    return res
+      .json({
+        message: "User does not exist",
+        code: 400,
+      })
+      .status(400);
+  }
+  res.locals.user = user;
+  return next();
+}
+
+async function userExistByEmailMiddleware(req, res, next) {
+  const { email } = req.body;
+  const user = await userRepository.getUserByEmail(email);
+
   if (user.length === 0) {
     return res
       .json({
@@ -27,4 +44,8 @@ async function userDoesNotExistMiddleware(req, res, next) {
   return next();
 }
 
-export { userDoesNotExistMiddleware, userExistMiddleware };
+export {
+  userDoesNotExistMiddleware,
+  userExistByEmailMiddleware,
+  userExistByIdMiddleware,
+};

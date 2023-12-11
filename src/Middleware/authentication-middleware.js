@@ -1,4 +1,6 @@
 import pkg from "dotenv";
+import { validatePassowrd } from "../Helpers/index.js";
+import { authRepository } from "../Repository/index.js";
 const { dotenv } = pkg;
 const result = pkg.config();
 
@@ -83,9 +85,38 @@ function validatePasswordMiddleware(req, res, next) {
 
   return next();
 }
+
+async function validateSignInMiddleware(req, res, next) {
+  const { email, password } = req.body;
+
+  if (password == undefined || password == null) {
+    return res
+      .json({
+        message: "You must send a password",
+        code: 401,
+      })
+      .status(401);
+  }
+
+  const user = await authRepository.getUserByEmail(email);
+
+  const stringPassword = password.toString();
+
+  if (!validatePassowrd(stringPassword, user[0].salt, user[0].hash)) {
+    return res
+      .json({
+        message: "Invalid Password",
+        code: 401,
+      })
+      .status(401);
+  }
+  return next();
+}
+
 export {
   apiKeyMiddleware,
   alreadyRegisteredMiddleware,
   validateEmailMiddleware,
   validatePasswordMiddleware,
+  validateSignInMiddleware,
 };
