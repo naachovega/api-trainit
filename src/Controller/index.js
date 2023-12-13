@@ -3,6 +3,7 @@ import {
   getUsersCredential,
   finishRegister,
   signIn,
+  finishRegisterByCode,
 } from "./authentication-controller.js";
 import { getUserByEmail } from "./user-controller.js";
 
@@ -12,4 +13,5 @@ export {
   getUsersCredential,
   finishRegister,
   signIn,
+  finishRegisterByCode,
 };
