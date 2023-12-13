@@ -111,7 +111,7 @@ async function signIn(email, password) {
     };
   }
 }
- 
+ {}
 async function finishRegisterByCode(email, code) {
   const user = await authRepository.getUserByEmail(email);
 
