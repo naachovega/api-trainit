@@ -4,6 +4,7 @@ import {
   validateEmailMiddleware,
   validatePasswordMiddleware,
   validateSignInMiddleware,
+  validateRegistrationCode,
 } from "./authentication-middleware.js";
 
 import { errorMiddelware, notFoundMiddlware } from "./error-middleware.js";
@@ -25,4 +26,5 @@ export {
   validatePasswordMiddleware,
   validateSignInMiddleware,
   userExistByIdMiddleware,
+  validateRegistrationCode,
 };

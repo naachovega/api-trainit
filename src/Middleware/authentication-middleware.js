@@ -18,8 +18,11 @@ function apiKeyMiddleware(req, res, next) {
   return next();
 }
 
-function alreadyRegisteredMiddleware(req, res, next) {
+async function alreadyRegisteredMiddleware(req, res, next) {
   const { registered } = res.locals.user[0];
+  const credentials = await authRepository.getUserByEmail(
+    req.locals.user[0].email
+  );
   if (registered) {
     return res
       .json({
@@ -28,6 +31,16 @@ function alreadyRegisteredMiddleware(req, res, next) {
       })
       .status(400);
   }
+
+  if (credentials[0].registrationCode === true) {
+    return res
+      .json({
+        message: "The user hasnt validated the code yet",
+        code: 400,
+      })
+      .status(400);
+  }
+
   return next();
 }
 
@@ -113,10 +126,36 @@ async function validateSignInMiddleware(req, res, next) {
   return next();
 }
 
+async function validateRegistrationCode(req, res, next) {
+  const { code, email } = req.body;
+
+  const user = await authRepository.getUserByEmail(email);
+  console.log(user[0]);
+  if (user[0].finished) {
+    return res
+      .json({
+        message: "The user already used this code",
+        code: 400,
+      })
+      .status(400);
+  }
+  if (user[0].registrationCode != code) {
+    return res
+      .json({
+        message: "The code sent is invalid",
+        code: 400,
+      })
+      .status(400);
+  }
+
+  return next();
+}
+
 export {
   apiKeyMiddleware,
   alreadyRegisteredMiddleware,
   validateEmailMiddleware,
   validatePasswordMiddleware,
   validateSignInMiddleware,
+  validateRegistrationCode,
 };
