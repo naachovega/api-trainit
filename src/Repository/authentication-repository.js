@@ -11,6 +11,9 @@ export class AuthenticationRepository {
   async getUserByEmail(email) {
     return this.storage.getUserByEmail(email);
   }
+  async getUserById(_id) {
+    return this.storage.getUserById(_id);
+  }
 
   deleteUser(email, password) {
     this.storage.deleteUser(email, password);
@@ -20,4 +23,11 @@ export class AuthenticationRepository {
     this.storage.signIn(email, password);
   }
 
+  async addCodeToFinishRegister(_id, code) {
+    return await this.storage.addCodeToFinishRegister(_id, code);
+  }
+
+  async finishRegistration(email, code) {
+    return await this.storage.finishRegistration(email, code);
+  }
 }

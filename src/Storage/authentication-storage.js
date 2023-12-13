@@ -8,15 +8,34 @@ export class AuthenticationStorage {
   async createUserByEmail(user) {
     this.collection.insertOne(user);
   }
-
-  async deleteUser(email, password) {}
-
-  async signIn(email, password) {}
-
   async getUserByEmail(email) {
     const user = await this.collection.find({ username: email }).toArray(0);
 
     return user;
   }
+  async getUserById(_id) {
+    const user = await this.collection.find({ _id: _id }).toArray(0);
 
+    return user;
+  }
+
+  async addCodeToFinishRegister(_id, code) {
+    return await this.collection.updateOne(
+      { _id: _id },
+      {
+        $set: {
+          registrationCode: code,
+        },
+      },
+      true
+    );
+  }
+
+  async finishRegistration(email, code) {
+    return await this.collection.updateOne(
+      { username: email },
+      { $set: { finished: code } },
+      true
+    );
+  }
 }
