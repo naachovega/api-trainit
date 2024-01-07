@@ -1,9 +1,10 @@
 import { userRepository } from "../Repository/index.js";
 
 async function userExistByIdMiddleware(req, res, next) {
-  const { _id } = req.body;
-  const user = await userRepository.getUserById(_id);
+  const { _id, userId } = req.body;
+  const id = _id || userId;
 
+  const user = await userRepository.getUserById(id);
   if (user.length === 0) {
     return res
       .json({
