@@ -30,4 +30,12 @@ export class AuthenticationRepository {
   async finishRegistration(email, code) {
     return await this.storage.finishRegistration(email, code);
   }
+
+  async recoverPasswordCode(uuid, code) {
+    return await this.storage.recoverPasswordCode(uuid, code);
+  }
+
+  async newPassword(uuid, hash, salt) {
+    return await this.storage.newPassword(uuid, hash, salt);
+  }
 }

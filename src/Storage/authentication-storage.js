@@ -38,4 +38,20 @@ export class AuthenticationStorage {
       true
     );
   }
+
+  async recoverPasswordCode(uuid, code) {
+    return await this.collection.updateOne(
+      { _id: uuid },
+      { $set: { recoveredPasswordCode: code } },
+      true
+    );
+  }
+
+  async newPassword(uuid, hash, salt) {
+    return await this.collection.updateOne(
+      { _id: uuid },
+      { $set: { hash: hash, salt: salt } },
+      true
+    );
+  }
 }
