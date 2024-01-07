@@ -2,7 +2,6 @@ import { v4 } from "uuid";
 import {
   hashPassword,
   generateCredential,
-  validatePassowrd,
   sendEmail,
 } from "../Helpers/index.js";
 import { CustomError } from "../Models/Interfaces/Errors.js";
@@ -40,7 +39,11 @@ async function createUserByEmail(email, password) {
       );
     }
 
-    const err = sendEmail(email, registrationCode);
+    const err = sendEmail(
+      `Your code to validate your identity for Train-It is ${registrationCode}`,
+      "Train-it Registration Code",
+      email
+    );
 
     if (err) {
       return { code: null, err: err, id: null };
@@ -80,7 +83,6 @@ async function finishRegister(request) {
     const userDTO = new UserDTO(name, lastName, birthdate, interests, true);
 
     const modified = await userRepository.finishRegister(_id, userDTO);
-
     if (modified.modifiedCount == 0) {
       return new CustomError(
         "No information was updated.",
@@ -93,13 +95,10 @@ async function finishRegister(request) {
   }
 }
 
-async function signIn(email, password) {
+async function signIn(email) {
   try {
-    const user = await getUsersCredential(email);
+    const user = await userRepository.getUserByEmail(email);
 
-    const stringPassword = password.toString();
-
-    validatePassowrd(stringPassword, user[0].salt, user[0].hash);
     return { user: user, err: null };
   } catch (error) {
     return {
@@ -122,8 +121,62 @@ async function finishRegisterByCode(email, code) {
   }
 
   const modified = await authRepository.finishRegistration(email, true);
-  console.log(modified);
+
   return;
+}
+
+async function mailRecoverPassword(email) {
+  const user = await authRepository.getUserByEmail(email);
+
+  const code = Math.floor(Math.random() * 99999);
+
+  const err = sendEmail(
+    `Your code to recover your password is: ${code}`,
+    "Recover Password",
+    email
+  );
+
+  if (err) {
+    return err;
+  }
+  const _id = user[0]._id;
+  const modified = await authRepository.recoverPasswordCode(_id, code);
+
+  if (modified.modifiedCount === 0) {
+    return new CustomError(
+      "The code wasnt generated properly.",
+      400,
+      "The code wasnt generated properly."
+    );
+  }
+
+  return;
+}
+
+async function createNewPassword(email, newPassword) {
+  try {
+    const user = await authRepository.getUserByEmail(email);
+
+    const uuid = user[0]._id;
+
+    const { hash, salt } = hashPassword(newPassword);
+
+    const updated = await authRepository.newPassword(uuid, hash, salt);
+
+    if (updated.modifiedCount === 0) {
+      return new CustomError(
+        "There was a problem updating the password",
+        400,
+        "There was a problem updating the password"
+      );
+    }
+
+    const returnUser = await userRepository.getUserById(uuid);
+
+    return { user: returnUser[0], err: null };
+  } catch (err) {
+    return new CustomError(err.message, 500, err.message), null;
+  }
 }
 
 export {
@@ -132,4 +185,6 @@ export {
   finishRegister,
   signIn,
   finishRegisterByCode,
+  mailRecoverPassword,
+  createNewPassword,
 };

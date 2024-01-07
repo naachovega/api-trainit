@@ -4,6 +4,8 @@ import {
   finishRegister,
   signIn,
   finishRegisterByCode,
+  mailRecoverPassword,
+  createNewPassword
 } from "./authentication-controller.js";
 import { getUserByEmail } from "./user-controller.js";
 
@@ -14,4 +16,6 @@ export {
   finishRegister,
   signIn,
   finishRegisterByCode,
+  mailRecoverPassword,
+  createNewPassword
 };
