@@ -5,9 +5,10 @@ import {
   signIn,
   finishRegisterByCode,
   mailRecoverPassword,
-  createNewPassword
+  createNewPassword,
 } from "./authentication-controller.js";
 import { getUserByEmail } from "./user-controller.js";
+import { Create, GetAll, Get } from "./routine-controller.js";
 
 export {
   createUserByEmail,
@@ -17,5 +18,8 @@ export {
   signIn,
   finishRegisterByCode,
   mailRecoverPassword,
-  createNewPassword
+  createNewPassword,
+  Create,
+  GetAll,
+  Get,
 };
