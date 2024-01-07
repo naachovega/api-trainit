@@ -1,6 +1,6 @@
 import express from "express";
 import pkg from "dotenv";
-import { authRouter } from "./src/routes/index.js";
+import { authRouter, routineRouter } from "./src/routes/index.js";
 import {
   errorMiddelware,
   apiKeyMiddleware,
@@ -16,6 +16,7 @@ const defaultEndpoint = "/api";
 app.use(express.json());
 
 app.use(`${defaultEndpoint}/auth`, apiKeyMiddleware, authRouter);
+app.use(`${defaultEndpoint}/routine`, apiKeyMiddleware, routineRouter);
 
 app.get("/", (req, res) => {
   let startTime = performance.now();

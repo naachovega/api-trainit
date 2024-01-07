@@ -1,2 +1,3 @@
 import authRouter from "./authentication.js";
-export { authRouter };
+import routineRouter from './routine.js'
+export { authRouter, routineRouter};
