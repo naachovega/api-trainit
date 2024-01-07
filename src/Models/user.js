@@ -18,6 +18,5 @@ export default class User {
     this.weeklyGoalAttendance = 0;
     this.gymAttendanceWeekly = 0;
     this.credential = credential;
-    this.routine = [];
   }
 }
