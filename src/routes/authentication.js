@@ -4,6 +4,8 @@ import {
   finishRegister,
   signIn,
   finishRegisterByCode,
+  mailRecoverPassword,
+  createNewPassword,
 } from "../Controller/index.js";
 import { CustomError } from "../Models/Interfaces/Errors.js";
 import {
@@ -60,8 +62,8 @@ authRouter.post(
   userExistByEmailMiddleware,
   validateSignInMiddleware,
   async (req, res) => {
-    const { email, password } = req.body;
-    const { user, err } = await signIn(email, password);
+    const { email } = req.body;
+    const { user, err } = await signIn(email);
 
     if (err) {
       return res
@@ -87,8 +89,8 @@ authRouter.patch(
   userExistByIdMiddleware,
   alreadyRegisteredMiddleware,
   async (req, res) => {
-    const { err } = await finishRegister(req);
-
+    const err = await finishRegister(req);
+    
     if (err) {
       return res
         .json({
@@ -133,6 +135,51 @@ authRouter.post(
         valid: true,
       })
       .status(200);
+  }
+);
+
+authRouter.post(
+  "/recover-password",
+  validateEmailMiddleware,
+  userExistByEmailMiddleware,
+  async (req, res) => {
+    const { email } = req.body;
+
+    const err = await mailRecoverPassword(email);
+
+    if (err) {
+      return res.status(500).json({
+        message: err.message,
+        err: err,
+      });
+    }
+
+    return res.status(200).json({
+      message: "the code was sent ok",
+    });
+  }
+);
+
+authRouter.patch(
+  "/new-password",
+  validateEmailMiddleware,
+  validatePasswordMiddleware,
+  async (req, res) => {
+    const { email, password } = req.body;
+
+    const { err, user } = await createNewPassword(email, password);
+
+    if (err) {
+      return res.status(err.code).json({
+        message: err.message,
+        code: err.code,
+      });
+    }
+
+    return res.status(200).json({
+      data: user,
+      code: 200,
+    });
   }
 );
 
