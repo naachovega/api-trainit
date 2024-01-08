@@ -4,6 +4,7 @@ import {
   GetAllExercises,
   GetExerciseById,
   UpdateWeight,
+  UpdateSet,
 } from "../Controller/index.js";
 import {
   validateRoutineId,
@@ -15,12 +16,20 @@ const exerciseRouter = express.Router();
 
 //add the exerciseid to the corresponding routine
 exerciseRouter.post("/", validateRoutineId, async (req, res) => {
-  const { name, description, desiredReps, desiredWeight, routineId } = req.body;
+  const {
+    name,
+    description,
+    desiredReps,
+    desiredSet,
+    desiredWeight,
+    routineId,
+  } = req.body;
 
   const exercise = new Exercise(
     name,
     description,
     desiredReps,
+    desiredSet,
     desiredWeight,
     routineId
   );
@@ -74,11 +83,28 @@ exerciseRouter.get("/:id", async (req, res) => {
   });
 });
 
-exerciseRouter.patch("/:id", validateExerciseId, async (req, res) => {
+exerciseRouter.patch("/weight/:id", validateExerciseId, async (req, res) => {
   const { id } = req.params;
   const { newWeight } = req.body;
 
   const { newExercise, err } = await UpdateWeight(id, newWeight);
+
+  if (err) {
+    return res.status(err.code).json({
+      message: err.message,
+    });
+  }
+
+  return res.status(200).json({
+    data: newExercise,
+  });
+});
+
+exerciseRouter.patch("/reps/:id", validateExerciseId, async (req, res) => {
+  const { id } = req.params;
+  const { repNumber } = req.body;
+
+  const { newExercise, err } = await UpdateSet(id, repNumber);
 
   if (err) {
     return res.status(err.code).json({
