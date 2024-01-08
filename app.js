@@ -21,7 +21,7 @@ app.use(express.json());
 
 app.use(`${defaultEndpoint}/auth`, apiKeyMiddleware, authRouter);
 app.use(`${defaultEndpoint}/routine`, apiKeyMiddleware, routineRouter);
-app.use(`${defaultEndpoint}/exercise`, apiKeyMiddleware, exerciseRouter);
+app.use(`${defaultEndpoint}/exercise`, apiKeyMiddleware, exerciseRouter); //add validations that check for less than 0 values in reps and set
 
 app.get("/", (req, res) => {
   let startTime = performance.now();
