@@ -3,8 +3,12 @@ import {
   CreateExercise,
   GetAllExercises,
   GetExerciseById,
+  UpdateWeight,
 } from "../Controller/index.js";
-import { validateRoutineId } from "../Middleware/exercise-middleware.js";
+import {
+  validateRoutineId,
+  validateExerciseId,
+} from "../Middleware/exercise-middleware.js";
 import Exercise from "../Models/exercise.js";
 
 const exerciseRouter = express.Router();
@@ -67,6 +71,23 @@ exerciseRouter.get("/:id", async (req, res) => {
 
   return res.status(200).json({
     data: exercise,
+  });
+});
+
+exerciseRouter.patch("/:id", validateExerciseId, async (req, res) => {
+  const { id } = req.params;
+  const { newWeight } = req.body;
+
+  const { newExercise, err } = await UpdateWeight(id, newWeight);
+
+  if (err) {
+    return res.status(err.code).json({
+      message: err.message,
+    });
+  }
+
+  return res.status(200).json({
+    data: newExercise,
   });
 });
 
