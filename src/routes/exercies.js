@@ -1,5 +1,9 @@
 import express from "express";
-import { CreateExercise } from "../Controller/index.js";
+import {
+  CreateExercise,
+  GetAllExercises,
+  GetExerciseById,
+} from "../Controller/index.js";
 import { validateRoutineId } from "../Middleware/exercise-middleware.js";
 import Exercise from "../Models/exercise.js";
 
@@ -26,6 +30,42 @@ exerciseRouter.post("/", validateRoutineId, async (req, res) => {
   }
 
   return res.status(201).json({
+    data: exercise,
+  });
+});
+
+exerciseRouter.get("/", async (req, res) => {
+  const { exercises, err } = await GetAllExercises();
+
+  if (err) {
+    return res.status(err.code).json({
+      message: err.message,
+    });
+  }
+
+  return res.status(200).json({
+    data: exercises,
+  });
+});
+
+exerciseRouter.get("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const { exercise, err } = await GetExerciseById(id);
+
+  if (err) {
+    return res.status(err.code).json({
+      message: err.message,
+    });
+  }
+
+  if (!exercise) {
+    return res.status(404).json({
+      message: "no exercise found",
+    });
+  }
+
+  return res.status(200).json({
     data: exercise,
   });
 });
