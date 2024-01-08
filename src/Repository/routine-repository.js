@@ -16,4 +16,8 @@ export class RoutineRepository {
   async find(id) {
     return await this.storage.get(id);
   }
+
+  async findByUserId(userId) {
+    return await this.storage.getByUserId(userId);
+  }
 }

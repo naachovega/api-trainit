@@ -17,4 +17,7 @@ export class RoutineStorage {
   async get(id) {
     return await this.collection.findOne({ _id: id });
   }
+  async getByUserId(userId) {
+    return await this.collection.find({ userId: userId }).toArray();
+  }
 }
