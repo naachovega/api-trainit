@@ -8,6 +8,7 @@ import {
 } from "./authentication-middleware.js";
 
 import { errorMiddelware, notFoundMiddlware } from "./error-middleware.js";
+import { validateRoutineId } from "./exercise-middleware.js";
 
 import {
   userDoesNotExistMiddleware,
@@ -27,4 +28,5 @@ export {
   validateSignInMiddleware,
   userExistByIdMiddleware,
   validateRegistrationCode,
+  validateRoutineId,
 };
