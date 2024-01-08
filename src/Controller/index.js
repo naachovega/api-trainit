@@ -9,6 +9,7 @@ import {
 } from "./authentication-controller.js";
 import { getUserByEmail } from "./user-controller.js";
 import { Create, GetAll, Get, GetByUserId } from "./routine-controller.js";
+import { CreateExercise } from "./exercise-controller.js";
 
 export {
   createUserByEmail,
@@ -23,4 +24,5 @@ export {
   GetAll,
   Get,
   GetByUserId,
+  CreateExercise,
 };
