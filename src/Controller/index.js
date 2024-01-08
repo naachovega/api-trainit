@@ -8,7 +8,7 @@ import {
   createNewPassword,
 } from "./authentication-controller.js";
 import { getUserByEmail } from "./user-controller.js";
-import { Create, GetAll, Get } from "./routine-controller.js";
+import { Create, GetAll, Get, GetByUserId } from "./routine-controller.js";
 
 export {
   createUserByEmail,
@@ -22,4 +22,5 @@ export {
   Create,
   GetAll,
   Get,
+  GetByUserId,
 };
