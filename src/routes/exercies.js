@@ -6,6 +6,7 @@ import {
   UpdateWeight,
   UpdateSet,
   UpdateReps,
+  DeleteExercise,
 } from "../Controller/index.js";
 import {
   validateRoutineId,
@@ -120,7 +121,6 @@ exerciseRouter.patch("/reps/:id", validateExerciseId, async (req, res) => {
   });
 });
 
-
 exerciseRouter.patch("/set/:id", validateExerciseId, async (req, res) => {
   const { id } = req.params;
   const { setNumber } = req.body;
@@ -138,5 +138,18 @@ exerciseRouter.patch("/set/:id", validateExerciseId, async (req, res) => {
   });
 });
 
+exerciseRouter.delete("/:id", validateExerciseId, async (req, res) => {
+  const { id } = req.params;
+
+  const err = await DeleteExercise(id);
+
+  if (err) {
+    return res.status(err.code).json({
+      message: err.message,
+    });
+  }
+
+  return res.status(204).json({});
+});
 
 export default exerciseRouter;
