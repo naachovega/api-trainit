@@ -17,4 +17,11 @@ export class ExerciseStorage {
   async getById(id) {
     return await this.collection.findOne({ _id: id });
   }
+
+  async updateWeights(id, newWeight) {
+    return await this.collection.updateOne(
+      { _id: id },
+      { $set: { actualWeight: newWeight } }
+    );
+  }
 }

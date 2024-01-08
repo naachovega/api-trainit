@@ -15,4 +15,8 @@ export class ExeriseRepository {
   async getById(id) {
     return await this.storage.getById(id);
   }
+
+  async updateWeights(id, newWeight) {
+    return await this.storage.updateWeights(id, newWeight);
+  }
 }
