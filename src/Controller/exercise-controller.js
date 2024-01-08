@@ -21,4 +21,38 @@ async function CreateExercise(exercise) {
   }
 }
 
-export { CreateExercise };
+async function GetAllExercises() {
+  try {
+    const exercises = await exerciseRepository.get();
+
+    return { exercises: exercises, err: null };
+  } catch (err) {
+    return {
+      exercises: null,
+      err: new CustomError(
+        `an unexpected error ocurred ${err.message}`,
+        500,
+        `an unexpected error ocurred ${err.message}`
+      ),
+    };
+  }
+}
+
+async function GetExerciseById(id) {
+  try {
+    const exercise = await exerciseRepository.getById(id);
+
+    return { exercise: exercise, err: null };
+  } catch (err) {
+    return {
+      exercises: null,
+      err: new CustomError(
+        `an unexpected error ocurred ${err.message}`,
+        500,
+        `an unexpected error ocurred ${err.message}`
+      ),
+    };
+  }
+}
+
+export { CreateExercise, GetAllExercises, GetExerciseById };
