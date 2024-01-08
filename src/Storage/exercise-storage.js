@@ -24,4 +24,10 @@ export class ExerciseStorage {
       { $set: { actualWeight: newWeight } }
     );
   }
+  async updateSet(id, repNumber) {
+    return await this.collection.updateOne(
+      { _id: id },
+      { $set: { actualReps: repNumber } }
+    );
+  }
 }

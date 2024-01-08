@@ -19,4 +19,7 @@ export class ExeriseRepository {
   async updateWeights(id, newWeight) {
     return await this.storage.updateWeights(id, newWeight);
   }
+  async updateSet(id, repNumber) {
+    return await this.storage.updateSet(id, repNumber);
+  }
 }
