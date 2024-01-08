@@ -136,6 +136,27 @@ async function UpdateReps(id, reps) {
   }
 }
 
+async function DeleteExercise(id) {
+  try {
+    const deleted = await exerciseRepository.delete(id);
+
+    if (deleted.deletedCount === 0) {
+      return new CustomError(
+        "the exercise couldnt be deleted",
+        400,
+        "the exercise couldnt be deleted"
+      );
+    }
+
+  } catch (err) {
+    return new CustomError(
+      `an unexpected error ocurred ${err.message}`,
+      500,
+      `an unexpected error ocurred ${err.message}`
+    );
+  }
+}
+
 export {
   CreateExercise,
   GetAllExercises,
@@ -143,4 +164,5 @@ export {
   UpdateWeight,
   UpdateSet,
   UpdateReps,
+  DeleteExercise,
 };
