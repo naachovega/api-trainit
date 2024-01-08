@@ -13,6 +13,7 @@ import {
   CreateExercise,
   GetAllExercises,
   GetExerciseById,
+  UpdateWeight,
 } from "./exercise-controller.js";
 
 export {
@@ -31,4 +32,5 @@ export {
   CreateExercise,
   GetAllExercises,
   GetExerciseById,
+  UpdateWeight,
 };
