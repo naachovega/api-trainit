@@ -15,6 +15,7 @@ import {
   GetExerciseById,
   UpdateWeight,
   UpdateSet,
+  UpdateReps,
 } from "./exercise-controller.js";
 
 export {
@@ -35,4 +36,5 @@ export {
   GetExerciseById,
   UpdateWeight,
   UpdateSet,
+  UpdateReps,
 };

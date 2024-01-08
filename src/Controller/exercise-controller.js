@@ -82,9 +82,9 @@ async function UpdateWeight(id, newWieght) {
   }
 }
 
-async function UpdateSet(id, repNumber) {
+async function UpdateSet(id, setNumber) {
   try {
-    const updated = await exerciseRepository.updateSet(id, repNumber);
+    const updated = await exerciseRepository.updateSet(id, setNumber);
 
     if (!updated.acknowledged) {
       return new CustomError(
@@ -109,10 +109,38 @@ async function UpdateSet(id, repNumber) {
   }
 }
 
+async function UpdateReps(id, reps) {
+  try {
+    const updated = await exerciseRepository.updateReps(id, reps);
+
+    if (!updated.acknowledged) {
+      return new CustomError(
+        `the reps couldnt be updated properly. please try again later`,
+        400,
+        `the reps couldnt be updated properly. please try again later`
+      );
+    }
+
+    const newExercise = await exerciseRepository.getById(id);
+
+    return { newExercise: newExercise, err: null };
+  } catch (err) {
+    return {
+      newExercise: null,
+      err: new CustomError(
+        `an unexpected error ocurred ${err.message}`,
+        500,
+        `an unexpected error ocurred ${err.message}`
+      ),
+    };
+  }
+}
+
 export {
   CreateExercise,
   GetAllExercises,
   GetExerciseById,
   UpdateWeight,
   UpdateSet,
+  UpdateReps,
 };
