@@ -8,4 +8,11 @@ export class ExeriseRepository {
   async create(exercise) {
     return await this.storage.create(exercise);
   }
+
+  async get() {
+    return await this.storage.get();
+  }
+  async getById(id) {
+    return await this.storage.getById(id);
+  }
 }
