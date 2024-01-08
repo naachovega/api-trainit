@@ -36,4 +36,8 @@ export class ExerciseStorage {
       { $set: { actualReps: repNumber } }
     );
   }
+
+  async delete(id) {
+    return await this.collection.deleteOne({ _id: id });
+  }
 }

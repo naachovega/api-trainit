@@ -25,4 +25,8 @@ export class ExeriseRepository {
   async updateReps(id, repNumber) {
     return await this.storage.updateReps(id, repNumber);
   }
+
+  async delete(id) {
+    return await this.storage.delete(id);
+  }
 }
