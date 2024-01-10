@@ -36,15 +36,31 @@ export class ExerciseStorage {
       { $set: { actualReps: repNumber } }
     );
   }
-  
+
   async delete(id) {
     return await this.collection.deleteOne({ _id: id });
   }
-  
+
   async finishExercise(id) {
     return await this.collection.updateOne(
       { _id: id },
       { $set: { completed: true } }
+    );
+  }
+
+  async update(id, exercise) {
+    return await this.collection.updateOne(
+      { _id: id },
+      {
+        $set: {
+          name: exercise.name,
+          description: exercise.description,
+          desiredReps: exercise.desiredReps,
+          desiredSet: exercise.desiredSet,
+          desiredWeight: exercise.desiredWeight,
+          restTime: exercise.restTime,
+        },
+      }
     );
   }
 }
