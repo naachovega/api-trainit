@@ -9,6 +9,7 @@ import {
   DeleteExercise,
   FinishExercise,
   Update,
+  GetByRoutineId,
 } from "../Controller/index.js";
 import {
   validateRoutineId,
@@ -205,5 +206,25 @@ exerciseRouter.patch("/:id", validateExerciseId, async (req, res) => {
     data: { newExercise },
   });
 });
+
+exerciseRouter.get(
+  "/routine/:id",
+  validateRoutineId,
+  async (req, res) => {
+    const { id } = req.params;
+
+    const { exercises, err } = await GetByRoutineId(id);
+
+    if (err) {
+      return res.status(err.code).json({
+        message: err.message,
+      });
+    }
+
+    return res.status(200).json({
+      data: exercises,
+    });
+  }
+);
 
 export default exerciseRouter;
