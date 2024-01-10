@@ -63,4 +63,8 @@ export class ExerciseStorage {
       }
     );
   }
+
+  async getByRoutineId(routineId) {
+    return await this.collection.find({ routineId: routineId }).toArray();
+  }
 }
