@@ -1,3 +1,4 @@
+import Exercise from "../Models/exercise.js";
 import { CustomError } from "../Models/Interfaces/Errors.js";
 import { exerciseRepository } from "../Repository/index.js";
 
@@ -147,7 +148,6 @@ async function DeleteExercise(id) {
         "the exercise couldnt be deleted"
       );
     }
-
   } catch (err) {
     return new CustomError(
       `an unexpected error ocurred ${err.message}`,
@@ -163,14 +163,93 @@ async function FinishExercise(id) {
 
     if (!modified.acknowledged) {
       return new CustomError(
-        "There was a problem updating the password",
+        "There was a problem finishing the exercise",
         400,
-        "There was a problem updating the password"
+        "There was a problem finishing the exercise"
       );
     }
   } catch (err) {
     return new CustomError(err.message, 500, err.message), null;
   }
+}
+
+async function Update(
+  id,
+  name,
+  description,
+  desiredReps,
+  desiredSet,
+  desiredWeight,
+  restTime
+) {
+  try {
+    const dbExercise = await exerciseRepository.getById(id);
+
+    const newExercise = validateExerciseInformation(
+      dbExercise,
+      name,
+      description,
+      desiredReps,
+      desiredSet,
+      desiredWeight,
+      restTime
+    );
+    const modified = await exerciseRepository.update(id, newExercise);
+
+    if (!modified.acknowledged) {
+      return {
+        newExercise: null,
+        err: new CustomError(
+          "the exercise couldnt be updated",
+          400,
+          "the exercise couldnt be updated"
+        ),
+      };
+    }
+    return { newExercise: newExercise, err: null };
+  } catch (err) {
+    return {
+      newExercise: null,
+      err: new CustomError(
+        `an unexpected error ocurred ${err.message}`,
+        500,
+        `an unexpected error ocurred ${err.message}`
+      ),
+    };
+  }
+}
+
+function validateExerciseInformation(
+  exercise,
+  name,
+  description,
+  desiredReps,
+  desiredSet,
+  desiredWeight,
+  restTime
+) {
+  if (name) {
+    exercise.name = name;
+  }
+  if (description) {
+    exercise.description = description;
+  }
+  if (desiredReps) {
+    exercise.desiredReps = desiredReps;
+  }
+  if (desiredSet) {
+    exercise.desiredSet = desiredSet;
+  }
+  if (desiredWeight) {
+    exercise.desiredWeight = desiredWeight;
+  }
+  if (restTime) {
+    exercise.restTime = restTime;
+  }
+
+  console.log(exercise);
+
+  return exercise;
 }
 
 export {
@@ -181,5 +260,6 @@ export {
   UpdateSet,
   UpdateReps,
   DeleteExercise,
-  FinishExercise
+  FinishExercise,
+  Update,
 };
