@@ -32,4 +32,7 @@ export class ExeriseRepository {
   async finishExercise(id) {
     return await this.storage.finishExercise(id);
   }
+  async update(id, exercise) {
+    return await this.storage.update(id,exercise);
+  }
 }
