@@ -33,6 +33,9 @@ export class ExeriseRepository {
     return await this.storage.finishExercise(id);
   }
   async update(id, exercise) {
-    return await this.storage.update(id,exercise);
+    return await this.storage.update(id, exercise);
+  }
+  async getByRoutineId(routineId) {
+    return await this.storage.getByRoutineId(routineId);
   }
 }
