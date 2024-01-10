@@ -8,6 +8,7 @@ import {
   UpdateReps,
   DeleteExercise,
   FinishExercise,
+  Update,
 } from "../Controller/index.js";
 import {
   validateRoutineId,
@@ -153,10 +154,46 @@ exerciseRouter.delete("/:id", validateExerciseId, async (req, res) => {
   return res.status(204).json({});
 });
 
-exerciseRouter.patch("/finish-exercise/:id", validateExerciseId, async (req, res) => {
-  const { id } = req.params;
+exerciseRouter.patch(
+  "/finish-exercise/:id",
+  validateExerciseId,
+  async (req, res) => {
+    const { id } = req.params;
 
-  const err = await FinishExercise(id);
+    const err = await FinishExercise(id);
+
+    if (err) {
+      return res.status(err.code).json({
+        message: err.message,
+      });
+    }
+
+    return res.status(200).json({
+      data: "the exercise was completed!",
+    });
+  }
+);
+
+exerciseRouter.patch("/:id", validateExerciseId, async (req, res) => {
+  const { id } = req.params;
+  const {
+    name,
+    description,
+    desiredReps,
+    desiredSet,
+    desiredWeight,
+    restTime,
+  } = req.body;
+
+  const { newExercise, err } = await Update(
+    id,
+    name,
+    description,
+    desiredReps,
+    desiredSet,
+    desiredWeight,
+    restTime
+  );
 
   if (err) {
     return res.status(err.code).json({
@@ -164,8 +201,8 @@ exerciseRouter.patch("/finish-exercise/:id", validateExerciseId, async (req, res
     });
   }
 
-  return res.status(200).json({
-    data: "the exercise was completed!",
+  res.status(200).json({
+    data: { newExercise },
   });
 });
 
