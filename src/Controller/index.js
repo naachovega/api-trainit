@@ -19,6 +19,7 @@ import {
   Update,
   DeleteExercise,
   FinishExercise,
+  GetByRoutineId,
 } from "./exercise-controller.js";
 
 export {
@@ -43,4 +44,5 @@ export {
   DeleteExercise,
   FinishExercise,
   Update,
+  GetByRoutineId,
 };

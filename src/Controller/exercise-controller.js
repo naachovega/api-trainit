@@ -246,10 +246,24 @@ function validateExerciseInformation(
   if (restTime) {
     exercise.restTime = restTime;
   }
-
-  console.log(exercise);
-
   return exercise;
+}
+
+async function GetByRoutineId(routineId) {
+  try {
+    const exercises = await exerciseRepository.getByRoutineId(routineId);
+
+    return { exercises: exercises, err: null };
+  } catch (err) {
+    return {
+      exercises: null,
+      err: new CustomError(
+        `an unexpected error ocurred ${err.message}`,
+        500,
+        `an unexpected error ocurred ${err.message}`
+      ),
+    };
+  }
 }
 
 export {
@@ -262,4 +276,5 @@ export {
   DeleteExercise,
   FinishExercise,
   Update,
+  GetByRoutineId,
 };
