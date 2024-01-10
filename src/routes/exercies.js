@@ -7,6 +7,7 @@ import {
   UpdateSet,
   UpdateReps,
   DeleteExercise,
+  FinishExercise,
 } from "../Controller/index.js";
 import {
   validateRoutineId,
@@ -150,6 +151,22 @@ exerciseRouter.delete("/:id", validateExerciseId, async (req, res) => {
   }
 
   return res.status(204).json({});
+});
+
+exerciseRouter.patch("/finish-exercise/:id", validateExerciseId, async (req, res) => {
+  const { id } = req.params;
+
+  const err = await FinishExercise(id);
+
+  if (err) {
+    return res.status(err.code).json({
+      message: err.message,
+    });
+  }
+
+  return res.status(200).json({
+    data: "the exercise was completed!",
+  });
 });
 
 export default exerciseRouter;
