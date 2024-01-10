@@ -16,7 +16,8 @@ import {
   UpdateWeight,
   UpdateSet,
   UpdateReps,
-  DeleteExercise
+  DeleteExercise,
+  FinishExercise
 } from "./exercise-controller.js";
 
 export {
@@ -38,5 +39,6 @@ export {
   UpdateWeight,
   UpdateSet,
   UpdateReps,
-  DeleteExercise
+  DeleteExercise,
+  FinishExercise
 };

@@ -157,6 +157,22 @@ async function DeleteExercise(id) {
   }
 }
 
+async function FinishExercise(id) {
+  try {
+    const modified = await exerciseRepository.finishExercise(id);
+
+    if (!modified.acknowledged) {
+      return new CustomError(
+        "There was a problem updating the password",
+        400,
+        "There was a problem updating the password"
+      );
+    }
+  } catch (err) {
+    return new CustomError(err.message, 500, err.message), null;
+  }
+}
+
 export {
   CreateExercise,
   GetAllExercises,
@@ -165,4 +181,5 @@ export {
   UpdateSet,
   UpdateReps,
   DeleteExercise,
+  FinishExercise
 };

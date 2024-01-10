@@ -8,7 +8,10 @@ import { CustomError } from "../Models/Interfaces/Errors.js";
 import UserCredential from "../Models/user-credential.js";
 import { UserDTO } from "../Models/user-infoDTO.js";
 import User from "../Models/user.js";
-import { authRepository, userRepository } from "../Repository/index.js";
+import {
+  authRepository,
+  userRepository,
+} from "../Repository/index.js";
 
 async function createUserByEmail(email, password) {
   try {
@@ -179,6 +182,7 @@ async function createNewPassword(email, newPassword) {
   }
 }
 
+
 export {
   createUserByEmail,
   getUsersCredential,
@@ -186,5 +190,5 @@ export {
   signIn,
   finishRegisterByCode,
   mailRecoverPassword,
-  createNewPassword,
+  createNewPassword
 };
