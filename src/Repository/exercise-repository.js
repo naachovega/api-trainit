@@ -29,4 +29,7 @@ export class ExeriseRepository {
   async delete(id) {
     return await this.storage.delete(id);
   }
+  async finishExercise(id) {
+    return await this.storage.finishExercise(id);
+  }
 }
