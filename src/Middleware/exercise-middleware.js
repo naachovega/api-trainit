@@ -2,8 +2,11 @@ import { exerciseRepository, routineRepository } from "../Repository/index.js";
 
 async function validateRoutineId(req, res, next) {
   try {
-    const { _id, routineId } = req.body;
-    const id = _id || routineId;
+    let { id } = req.params;
+
+    if (!id) {
+      id = req.body.routineId;
+    }
 
     const routine = await routineRepository.find(id);
 
