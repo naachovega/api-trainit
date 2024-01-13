@@ -19,4 +19,7 @@ export class UserRepository {
   async getUserById(_id) {
     return await this.storage.getUserById(_id);
   }
+  async addRoutineId(_id, routineId) {
+    return await this.storage.addRoutineId(_id, routineId);
+  }
 }

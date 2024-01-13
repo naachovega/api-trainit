@@ -31,4 +31,16 @@ export class UserStorage {
   async getUserById(_id) {
     return await this.collection.find({ _id: _id }).toArray(0);
   }
+
+  async addRoutineId(_id, routineId) {
+    return await this.collection.updateOne(
+      { _id: _id },
+      {
+        $push: {
+          routines: routineId,
+        },
+      },
+      true
+    );
+  }
 }
