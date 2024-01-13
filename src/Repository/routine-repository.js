@@ -20,4 +20,7 @@ export class RoutineRepository {
   async findByUserId(userId) {
     return await this.storage.getByUserId(userId);
   }
+  async addExerciseId(id, exerciseId) {
+    return await this.storage.addExerciseId(id, exerciseId);
+  }
 }

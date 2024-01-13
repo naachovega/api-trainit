@@ -10,6 +10,6 @@ export default class Routine {
     this.day = day;
     this.month = month;
     this.year = year;
-    this.exercises = []; //this will be an array of exercises, and each exercise will have a routineId
+    this.exercises = []; 
   }
 }

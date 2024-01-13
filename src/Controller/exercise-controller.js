@@ -1,4 +1,3 @@
-import Exercise from "../Models/exercise.js";
 import { CustomError } from "../Models/Interfaces/Errors.js";
 import { exerciseRepository } from "../Repository/index.js";
 

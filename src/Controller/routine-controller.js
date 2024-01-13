@@ -1,5 +1,5 @@
 import { CustomError } from "../Models/Interfaces/Errors.js";
-import { routineRepository } from "../Repository/index.js";
+import { exerciseRepository, routineRepository } from "../Repository/index.js";
 
 async function Create(routine) {
   try {
@@ -57,8 +57,8 @@ async function Get(id) {
 
 async function GetByUserId(userId) {
   try {
-    const routines = await  routineRepository.findByUserId(userId);
-    
+    const routines = await routineRepository.findByUserId(userId);
+
     return { routines: routines, err: null };
   } catch (error) {
     return {
@@ -71,4 +71,52 @@ async function GetByUserId(userId) {
     };
   }
 }
-export { Create, GetAll, Get, GetByUserId };
+
+async function AddExercisesToRoutine(id, exercises) {
+  try {
+    const length = exercises.length;
+
+    let errCounter = 0;
+    let addedCoutner = 0;
+    for (let i = 0; i < length; i++) {
+      const exercise = await exerciseRepository.getById(exercises[i]);
+
+      if (!exercise) {
+        continue;
+      }
+
+      const added = await routineRepository.addExerciseId(id, exercises[i]);
+
+      if (!added.acknowledged) {
+        errCounter++;
+      } else {
+        addedCoutner++;
+      }
+    }
+    console.log(addedCoutner);
+    if (errCounter > 0) {
+      return new CustomError(
+        `there was a problem adding ${errCounter} exercise/s to the routine`,
+        500,
+        `there was a problem adding ${errCounter} exercise/s to the routine`
+      );
+    }
+
+    if (addedCoutner === 0) {
+      return new CustomError(`no exercises added`, null, `no exercises added`);
+    }
+
+    return { addedCount: addedCoutner, err: null };
+  } catch (err) {
+    return {
+      addedCount: 0,
+      err: new CustomError(
+        `an unexpected error ocurred: ${err.message}`,
+        500,
+        "an unexpected error ocurred"
+      ),
+    };
+  }
+}
+
+export { Create, GetAll, Get, GetByUserId, AddExercisesToRoutine };

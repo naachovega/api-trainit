@@ -7,8 +7,14 @@ import {
   mailRecoverPassword,
   createNewPassword,
 } from "./authentication-controller.js";
-import { getUserByEmail } from "./user-controller.js";
-import { Create, GetAll, Get, GetByUserId } from "./routine-controller.js";
+import { AddRoutineToUser } from "./user-controller.js";
+import {
+  Create,
+  GetAll,
+  Get,
+  GetByUserId,
+  AddExercisesToRoutine,
+} from "./routine-controller.js";
 import {
   CreateExercise,
   GetAllExercises,
@@ -24,7 +30,7 @@ import {
 
 export {
   createUserByEmail,
-  getUserByEmail,
+  AddRoutineToUser,
   getUsersCredential,
   finishRegister,
   signIn,
@@ -45,4 +51,5 @@ export {
   FinishExercise,
   Update,
   GetByRoutineId,
+  AddExercisesToRoutine,
 };

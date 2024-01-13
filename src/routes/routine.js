@@ -1,5 +1,12 @@
 import express from "express";
-import { Create, GetAll, Get, GetByUserId } from "../Controller/index.js";
+import {
+  Create,
+  GetAll,
+  Get,
+  GetByUserId,
+  AddRoutineToUser,
+  AddExercisesToRoutine,
+} from "../Controller/index.js";
 import { userExistByIdMiddleware } from "../Middleware/user-middleware.js";
 import Routine from "../Models/routine.js";
 
@@ -19,7 +26,7 @@ routineRouter.post("/", userExistByIdMiddleware, async (req, res) => {
     year
   );
 
-  const err = await Create(routine);
+  let err = await Create(routine);
 
   if (err) {
     return res.status(err.code).json({
@@ -27,8 +34,32 @@ routineRouter.post("/", userExistByIdMiddleware, async (req, res) => {
     });
   }
 
-  res.status(201).json({
+  err = await AddRoutineToUser(userId, routine._id);
+  if (err) {
+    return res.status(err.code).json({
+      message: err.message,
+    });
+  }
+
+  const { exercises } = req.body;
+  let message;
+
+  if (exercises != "") {
+    let { addedCount, errAddingExercise } = await AddExercisesToRoutine(
+      routine._id,
+      exercises
+    );
+    if (err) {
+      message = errAddingExercise.message;
+    }
+    if (addedCount > 0) {
+      routine.exercises = exercises;
+    }
+  }
+
+  return res.status(201).json({
     data: routine,
+    message: message,
   });
 });
 
@@ -72,12 +103,12 @@ routineRouter.get("/byUserId/:userId", async (req, res) => {
   const { userId } = req.params;
 
   const { routines, err } = await GetByUserId(userId);
-  
+
   if (err) {
     return res.status(err.code).json({
       message: err.message,
     });
-  } 
+  }
 
   if (routines.length === 0) {
     return res.status(404).json({

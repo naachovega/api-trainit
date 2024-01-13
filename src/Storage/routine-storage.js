@@ -20,4 +20,16 @@ export class RoutineStorage {
   async getByUserId(userId) {
     return await this.collection.find({ userId: userId }).toArray();
   }
+
+  async addExerciseId(_id, exerciseId) {
+    return await this.collection.updateOne(
+      { _id: _id },
+      {
+        $push: {
+          exercises: exerciseId,
+        },
+      },
+      true
+    );
+  }
 }

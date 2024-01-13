@@ -9,6 +9,7 @@ import {
   DeleteExercise,
   FinishExercise,
   Update,
+  AddExercisesToRoutine,
   GetByRoutineId,
 } from "../Controller/index.js";
 import {
@@ -49,8 +50,22 @@ exerciseRouter.post("/", validateRoutineId, async (req, res) => {
     });
   }
 
+  const exercises = [exercise._id];
+  let message;
+
+  if (exercises != "") {
+    let { errAddingExercise } = await AddExercisesToRoutine(
+      routineId,
+      exercises
+    );
+    if (err) {
+      message = errAddingExercise.message;
+    }
+  }
+
   return res.status(201).json({
     data: exercise,
+    message: message,
   });
 });
 
@@ -207,24 +222,20 @@ exerciseRouter.patch("/:id", validateExerciseId, async (req, res) => {
   });
 });
 
-exerciseRouter.get(
-  "/routine/:id",
-  validateRoutineId,
-  async (req, res) => {
-    const { id } = req.params;
+exerciseRouter.get("/routine/:id", validateRoutineId, async (req, res) => {
+  const { id } = req.params;
 
-    const { exercises, err } = await GetByRoutineId(id);
+  const { exercises, err } = await GetByRoutineId(id);
 
-    if (err) {
-      return res.status(err.code).json({
-        message: err.message,
-      });
-    }
-
-    return res.status(200).json({
-      data: exercises,
+  if (err) {
+    return res.status(err.code).json({
+      message: err.message,
     });
   }
-);
+
+  return res.status(200).json({
+    data: exercises,
+  });
+});
 
 export default exerciseRouter;
