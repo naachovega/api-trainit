@@ -32,4 +32,22 @@ export class RoutineStorage {
       true
     );
   }
+
+  async update(_id, routine) {
+    return await this.collection.updateOne(
+      { _id: _id },
+      {
+        $set: {
+          name : routine.name,
+          description : routine.description,
+          userId : routine.userId,
+          dateString : routine.dateString,
+          day : routine.day,
+          month : routine.month,
+          year : routine.year
+        },
+      },
+      true
+    );
+  }
 }

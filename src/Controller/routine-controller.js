@@ -119,4 +119,100 @@ async function AddExercisesToRoutine(id, exercises) {
   }
 }
 
-export { Create, GetAll, Get, GetByUserId, AddExercisesToRoutine };
+async function UpdateRotuineInfo(
+  id,
+  name,
+  description,
+  userId,
+  dateString,
+  day,
+  month,
+  year
+) {
+  try {
+    const dbRoutine = await routineRepository.find(id);
+
+    if (!dbRoutine) {
+      return new CustomError(
+        "the routine sent doesnt exist",
+        400,
+        "the routine coudlnt be updated"
+      );
+    }
+
+    const newRoutine = validateRoutineInformation(
+      dbRoutine,
+      name,
+      description,
+      userId,
+      dateString,
+      day,
+      month,
+      year
+    );
+
+    const modified = await routineRepository.update(id, newRoutine);
+
+    if (!modified.acknowledged) {
+      return new CustomError(
+        "the routine coudlnt be updated",
+        400,
+        "the routine coudlnt be updated"
+      );
+    }
+
+    return { routine: newRoutine, err: null };
+  } catch (err) {
+    return {
+      routine: null,
+      err: new CustomError(
+        "an unexpected error ocurred",
+        500,
+        "an unexpected error ocurred"
+      ),
+    };
+  }
+}
+
+function validateRoutineInformation(
+  routine,
+  name,
+  description,
+  userId,
+  dateString,
+  day,
+  month,
+  year
+) {
+  if (name) {
+    routine.name = name;
+  }
+  if (description) {
+    routine.description = description;
+  }
+  if (userId) {
+    routine.userId = userId;
+  }
+  if (dateString) {
+    routine.dateString = dateString;
+  }
+  if (day) {
+    routine.day = day;
+  }
+  if (month) {
+    routine.month = month;
+  }
+  if (year) {
+    routine.year = year;
+  }
+  return routine;
+}
+
+export {
+  Create,
+  GetAll,
+  Get,
+  GetByUserId,
+  AddExercisesToRoutine,
+  UpdateRotuineInfo,
+};

@@ -22,4 +22,7 @@ export class UserRepository {
   async addRoutineId(_id, routineId) {
     return await this.storage.addRoutineId(_id, routineId);
   }
+  async removeRoutineId(_id, routineId) {
+    return await this.storage.removeRoutineId(_id, routineId);
+  }
 }

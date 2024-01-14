@@ -16,9 +16,29 @@ async function AddRoutineToUser(userId, routineId) {
     return new CustomError(
       "An unexpected error ocurred.",
       500,
-      "The routine couldnt be added to the user correctly."
+      "An unexpected error ocurred."
     );
   }
 }
 
-export { AddRoutineToUser };
+async function RemoveRoutineId(userId, routineId) {
+  try {
+    const modified = await userRepository.removeRoutineId(userId, routineId);
+
+    if (!modified.acknowledged) {
+      return new CustomError(
+        "The routine couldnt be removed to the user correctly.",
+        400,
+        "The routine couldnt be removed to the user correctly."
+      );
+    }
+  } catch (err) {
+    return new CustomError(
+      "An unexpected error ocurred.",
+      500,
+      "An unexpected error ocurred."
+    );
+  }
+}
+
+export { AddRoutineToUser,RemoveRoutineId };

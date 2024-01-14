@@ -23,4 +23,8 @@ export class RoutineRepository {
   async addExerciseId(id, exerciseId) {
     return await this.storage.addExerciseId(id, exerciseId);
   }
+
+  async update(id, routine) {
+    return await this.storage.update(id, routine);
+  }
 }

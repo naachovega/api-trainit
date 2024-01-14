@@ -6,8 +6,13 @@ import {
   GetByUserId,
   AddRoutineToUser,
   AddExercisesToRoutine,
+  UpdateRotuineInfo,
+  RemoveRoutineId,
 } from "../Controller/index.js";
-import { userExistByIdMiddleware } from "../Middleware/user-middleware.js";
+import {
+  userExistByIdMiddleware,
+  validateRoutineId,
+} from "../Middleware/index.js";
 import Routine from "../Models/routine.js";
 
 const routineRouter = express.Router();
@@ -118,6 +123,53 @@ routineRouter.get("/byUserId/:userId", async (req, res) => {
 
   return res.status(200).json({
     data: routines,
+  });
+});
+
+routineRouter.patch("/:id", validateRoutineId, async (req, res) => {
+  const { id } = req.params;
+  const { name, description, userId, dateString, day, month, year, coachId } =
+    req.body;
+
+  const { routine, err } = await UpdateRotuineInfo(
+    id,
+    name,
+    description,
+    userId,
+    dateString,
+    day,
+    month,
+    year
+  );
+
+  if (err) {
+    return res.status(err.code).json({
+      message: err.messgae,
+    });
+  }
+
+  if (userId) {
+    //guardar el id de la rutina en el del nuevo user y borrar en el anterior
+
+    const errSaving = await AddRoutineToUser(userId, id);
+
+    if (errSaving) {
+      return res.status(err.code).json({
+        message: err.message,
+      });
+    }
+
+    // despues borrarlo del original desde coachId
+    const errDeleting = await RemoveRoutineId(coachId, id);
+    if (errDeleting) {
+      return res.status(err.code).json({
+        message: err.message,
+      });
+    }
+  }
+
+  return res.status(200).json({
+    data: routine,
   });
 });
 

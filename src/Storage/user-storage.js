@@ -43,4 +43,15 @@ export class UserStorage {
       true
     );
   }
+  async removeRoutineId(_id, routineId) {
+    return await this.collection.updateOne(
+      { _id: _id },
+      {
+        $pull: {
+          routines: routineId,
+        },
+      },
+      true
+    );
+  }
 }
