@@ -15,8 +15,8 @@ export class AuthenticationRepository {
     return this.storage.getUserById(_id);
   }
 
-  deleteUser(email, password) {
-    this.storage.deleteUser(email, password);
+  async deleteUser(email) {
+    return this.storage.deleteUser(email);
   }
 
   signIn(email, password) {

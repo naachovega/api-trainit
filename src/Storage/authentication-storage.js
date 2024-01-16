@@ -66,4 +66,8 @@ export class AuthenticationStorage {
       true
     );
   }
+
+  async deleteUser(id) {
+    return await this.collection.deleteOne({ _id: id });
+  }
 }

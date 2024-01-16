@@ -84,4 +84,8 @@ export class UserStorage {
       true
     );
   }
+
+  async deleteUser(id) {
+    return await this.collection.deleteOne({ _id: id });
+  }
 }
