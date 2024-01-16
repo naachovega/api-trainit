@@ -1,6 +1,14 @@
 import express from "express";
-import { GetAllUsers, GetUserById, UpdateUser } from "../Controller/index.js";
-import { userExistIdParam } from "../Middleware/index.js";
+import {
+  GetAllUsers,
+  GetUserById,
+  UpdateUser,
+  UpdateUserEmail,
+} from "../Controller/index.js";
+import {
+  userExistIdParam,
+  validateEmailMiddleware,
+} from "../Middleware/index.js";
 import { UserUpdateDTO } from "../Models/user-updateDTO.js";
 
 const userRouter = express.Router();
@@ -53,5 +61,27 @@ userRouter.patch("/:id", userExistIdParam, async (req, res) => {
     data: user[0],
   });
 });
+
+userRouter.patch(
+  "/email/:id",
+  userExistIdParam,
+  validateEmailMiddleware,
+  async (req, res) => {
+    const { id } = req.params;
+    const { email } = req.body;
+
+    const { user, err } = await UpdateUserEmail(id, email);
+
+    if (err) {
+      return res.status(err.code).json({
+        message: err.message,
+      });
+    }
+
+    return res.status(200).json({
+      data: user,
+    });
+  }
+);
 
 export default userRouter;
