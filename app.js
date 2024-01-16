@@ -22,7 +22,7 @@ app.use(express.json());
 
 app.use(`${defaultEndpoint}/auth`, apiKeyMiddleware, authRouter);
 app.use(`${defaultEndpoint}/routine`, apiKeyMiddleware, routineRouter);
-app.use(`${defaultEndpoint}/exercise`, apiKeyMiddleware, exerciseRouter); //add validations that check for less than 0 values in reps and set
+app.use(`${defaultEndpoint}/exercise`, apiKeyMiddleware, exerciseRouter);
 app.use(`${defaultEndpoint}/user`, apiKeyMiddleware, userRouter);
 
 app.get("/", (req, res) => {
