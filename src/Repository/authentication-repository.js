@@ -38,4 +38,7 @@ export class AuthenticationRepository {
   async newPassword(uuid, hash, salt) {
     return await this.storage.newPassword(uuid, hash, salt);
   }
+  async updateUserEmail(id, email) {
+    return await this.storage.updateUserEmail(id, email);
+  }
 }

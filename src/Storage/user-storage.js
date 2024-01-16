@@ -72,4 +72,16 @@ export class UserStorage {
       true
     );
   }
+
+  async updateUserEmail(_id, email) {
+    return await this.collection.updateOne(
+      { _id: _id },
+      {
+        $set: {
+          email: email,
+        },
+      },
+      true
+    );
+  }
 }

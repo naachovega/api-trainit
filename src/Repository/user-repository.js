@@ -32,4 +32,8 @@ export class UserRepository {
   async updateUser(_id, userDTO) {
     return await this.storage.updateUser(_id, userDTO);
   }
+
+  async updateUserEmail(id, email) {
+    return await this.storage.updateUserEmail(id, email);
+  }
 }
