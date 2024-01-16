@@ -13,6 +13,7 @@ import {
   GetAllUsers,
   GetUserById,
   UpdateUser,
+  UpdateUserEmail,
 } from "./user-controller.js";
 import {
   Create,
@@ -64,4 +65,5 @@ export {
   GetAllUsers,
   GetUserById,
   UpdateUser,
+  UpdateUserEmail,
 };

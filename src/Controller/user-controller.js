@@ -1,5 +1,5 @@
 import { CustomError } from "../Models/Interfaces/Errors.js";
-import { userRepository } from "../Repository/index.js";
+import { authRepository, userRepository } from "../Repository/index.js";
 
 async function AddRoutineToUser(userId, routineId) {
   try {
@@ -109,6 +109,62 @@ async function UpdateUser(id, userDTO) {
   }
 }
 
+async function UpdateUserEmail(id, email) {
+  try {
+    let user = await userRepository.getUserByEmail(email);
+
+    if (user.length > 0) {
+      return {
+        user: null,
+        err: new CustomError(
+          "the email already exist in the system",
+          422,
+          "the email already exist in the system"
+        ),
+      };
+    }
+
+    const modified = await userRepository.updateUserEmail(id, email);
+
+    if (!modified.acknowledged) {
+      return {
+        user: null,
+        err: new CustomError(
+          "the user email couldnt be updated",
+          400,
+          "the user email couldnt be updated"
+        ),
+      };
+    }
+
+    const authModified = await authRepository.updateUserEmail(id, email);
+
+    if (!authModified.acknowledged) {
+      return {
+        user: null,
+        err: new CustomError(
+          "there was an error updating the user",
+          400,
+          "there was an error updating the user"
+        ),
+      };
+    }
+
+    user = await userRepository.getUserById(id);
+
+    return { user: user, err: null };
+  } catch (err) {
+    return {
+      user: null,
+      err: new CustomError(
+        "an unexpected error ocurred",
+        500,
+        "an unexpected error ocurred"
+      ),
+    };
+  }
+}
+
 function validateUserInformation(user, userDTO) {
   if (userDTO.interests) {
     user.interests = userDTO.interests;
@@ -128,4 +184,5 @@ export {
   GetAllUsers,
   GetUserById,
   UpdateUser,
+  UpdateUserEmail,
 };
