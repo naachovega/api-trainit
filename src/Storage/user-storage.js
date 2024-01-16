@@ -32,6 +32,10 @@ export class UserStorage {
     return await this.collection.find({ _id: _id }).toArray(0);
   }
 
+  async getUsers() {
+    return await this.collection.find({}).toArray();
+  }
+
   async addRoutineId(_id, routineId) {
     return await this.collection.updateOne(
       { _id: _id },
@@ -49,6 +53,20 @@ export class UserStorage {
       {
         $pull: {
           routines: routineId,
+        },
+      },
+      true
+    );
+  }
+
+  async updateUser(_id, userDTO) {
+    return await this.collection.updateOne(
+      { _id: _id },
+      {
+        $set: {
+          bio: userDTO.bio,
+          interests: userDTO.interests,
+          birthdate: userDTO.birthdate,
         },
       },
       true
