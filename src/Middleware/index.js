@@ -17,6 +17,7 @@ import {
   userDoesNotExistMiddleware,
   userExistByEmailMiddleware,
   userExistByIdMiddleware,
+  userExistIdParam,
 } from "./user-middleware.js";
 
 export {
@@ -33,4 +34,5 @@ export {
   validateRegistrationCode,
   validateRoutineId,
   validateExerciseId,
+  userExistIdParam,
 };
