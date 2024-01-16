@@ -4,6 +4,7 @@ import {
   GetUserById,
   UpdateUser,
   UpdateUserEmail,
+  DeleteUser,
 } from "../Controller/index.js";
 import {
   userExistIdParam,
@@ -83,5 +84,19 @@ userRouter.patch(
     });
   }
 );
+
+userRouter.delete("/:id", userExistIdParam, async (req, res) => {
+  const { id } = req.params;
+
+  const err = await DeleteUser(id);
+
+  if (err) {
+    return res.status(err.code).json({
+      message: err.message,
+    });
+  }
+
+  return res.status(204).json({});
+});
 
 export default userRouter;
