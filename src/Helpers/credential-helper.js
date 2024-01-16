@@ -1,5 +1,9 @@
 function generateCredential() {
-  return "1234-1234-1234-1234";
+  return `${Math.floor(Math.random() * 10000) + 1}-${
+    Math.floor(Math.random() * 10000) + 1
+  }-${Math.floor(Math.random() * 10000) + 1}-${
+    Math.floor(Math.random() * 10000) + 1
+  }`;
 }
 
 export { generateCredential };
