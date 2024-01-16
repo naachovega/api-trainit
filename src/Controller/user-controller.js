@@ -41,6 +41,91 @@ async function RemoveRoutineId(userId, routineId) {
   }
 }
 
+async function GetAllUsers() {
+  try {
+    const users = await userRepository.getUsers();
 
+    return { users: users, err: null };
+  } catch (err) {
+    return {
+      users: null,
+      err: new CustomError(
+        "an unexpected error ocurred",
+        500,
+        "an unexpected error ocurred"
+      ),
+    };
+  }
+}
 
-export { AddRoutineToUser,RemoveRoutineId };
+async function GetUserById(id) {
+  try {
+    const user = await userRepository.getUserById(id);
+
+    return { user: user, err: null };
+  } catch (err) {
+    return {
+      user: null,
+      err: new CustomError(
+        "an unexpected error ocurred",
+        500,
+        "an unexpected error ocurred"
+      ),
+    };
+  }
+}
+
+async function UpdateUser(id, userDTO) {
+  try {
+    const dbUser = await userRepository.getUserById(id);
+
+    let user = validateUserInformation(dbUser[0], userDTO);
+
+    const modified = await userRepository.updateUser(id, user);
+
+    if (!modified.acknowledged) {
+      return {
+        user: null,
+        err: new CustomError(
+          "the user couldnt be updated",
+          400,
+          "the user couldnt be updated"
+        ),
+      };
+    }
+
+    user = await userRepository.getUserById(id);
+
+    return { user: user, err: null };
+  } catch (err) {
+    return {
+      user: null,
+      err: new CustomError(
+        "an unexpected error ocurred",
+        500,
+        "an unexpected error ocurred"
+      ),
+    };
+  }
+}
+
+function validateUserInformation(user, userDTO) {
+  if (userDTO.interests) {
+    user.interests = userDTO.interests;
+  }
+  if (userDTO.birthdate) {
+    user.birthdate = userDTO.birthdate;
+  }
+  if (userDTO.bio) {
+    user.bio = userDTO.bio;
+  }
+
+  return user;
+}
+export {
+  AddRoutineToUser,
+  RemoveRoutineId,
+  GetAllUsers,
+  GetUserById,
+  UpdateUser,
+};
