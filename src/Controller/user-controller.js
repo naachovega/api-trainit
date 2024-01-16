@@ -165,6 +165,35 @@ async function UpdateUserEmail(id, email) {
   }
 }
 
+async function DeleteUser(id) {
+  try {
+    let deleted = await userRepository.deleteUser(id);
+
+    if (!deleted.acknowledged) {
+      return new CustomError(
+        "the user couldnt be deleted",
+        500,
+        "the user couldnt be deleted"
+      );
+    }
+
+    deleted = await authRepository.deleteUser(id);
+    if (!deleted.acknowledged) {
+      return new CustomError(
+        "the user couldnt be deleted",
+        500,
+        "the user couldnt be deleted"
+      );
+    }
+  } catch (err) {
+    return new CustomError(
+      "an unexpected error ocurred",
+      500,
+      "an unexpected error ocurred"
+    );
+  }
+}
+
 function validateUserInformation(user, userDTO) {
   if (userDTO.interests) {
     user.interests = userDTO.interests;
@@ -178,6 +207,7 @@ function validateUserInformation(user, userDTO) {
 
   return user;
 }
+
 export {
   AddRoutineToUser,
   RemoveRoutineId,
@@ -185,4 +215,5 @@ export {
   GetUserById,
   UpdateUser,
   UpdateUserEmail,
+  DeleteUser
 };
