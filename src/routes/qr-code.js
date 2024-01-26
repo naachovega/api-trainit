@@ -1,7 +1,5 @@
-import {express} from express
+import express from "express";
 
-const qrRouter = express.Router()
+const qrRouter = express.Router();
 
-
-
-export default qrRouter
+export default qrRouter;
