@@ -5,6 +5,7 @@ import {
   routineRouter,
   exerciseRouter,
   userRouter,
+  qrRouter,
 } from "./src/routes/index.js";
 import {
   errorMiddelware,
@@ -24,6 +25,7 @@ app.use(`${defaultEndpoint}/auth`, apiKeyMiddleware, authRouter);
 app.use(`${defaultEndpoint}/routine`, apiKeyMiddleware, routineRouter);
 app.use(`${defaultEndpoint}/exercise`, apiKeyMiddleware, exerciseRouter);
 app.use(`${defaultEndpoint}/user`, apiKeyMiddleware, userRouter);
+app.use(`${defaultEndpoint}/qr`, apiKeyMiddleware, qrRouter);
 
 app.get("/", (req, res) => {
   let startTime = performance.now();
