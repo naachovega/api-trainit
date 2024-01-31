@@ -6,16 +6,18 @@ export class UserStorage {
     this.collection = this.storage.getCollection();
   }
   async getUserByEmail(email) {
-    return await this.collection.find({ email: email }).toArray(0);
+    return await this.collection.find({
+      email: email
+    }).toArray(0);
   }
   async createUserByEmail(user) {
     this.collection.insertOne(user);
   }
 
   async finishRegister(_id, userInfoDTO) {
-    return await this.collection.updateOne(
-      { _id: _id },
-      {
+    return await this.collection.updateOne({
+        _id: _id
+      }, {
         $set: {
           name: userInfoDTO.name,
           lastName: userInfoDTO.lastName,
@@ -29,7 +31,9 @@ export class UserStorage {
   }
 
   async getUserById(_id) {
-    return await this.collection.find({ _id: _id }).toArray(0);
+    return await this.collection.find({
+      _id: _id
+    }).toArray(0);
   }
 
   async getUsers() {
@@ -37,9 +41,9 @@ export class UserStorage {
   }
 
   async addRoutineId(_id, routineId) {
-    return await this.collection.updateOne(
-      { _id: _id },
-      {
+    return await this.collection.updateOne({
+        _id: _id
+      }, {
         $push: {
           routines: routineId,
         },
@@ -48,9 +52,9 @@ export class UserStorage {
     );
   }
   async removeRoutineId(_id, routineId) {
-    return await this.collection.updateOne(
-      { _id: _id },
-      {
+    return await this.collection.updateOne({
+        _id: _id
+      }, {
         $pull: {
           routines: routineId,
         },
@@ -60,9 +64,9 @@ export class UserStorage {
   }
 
   async updateUser(_id, userDTO) {
-    return await this.collection.updateOne(
-      { _id: _id },
-      {
+    return await this.collection.updateOne({
+        _id: _id
+      }, {
         $set: {
           bio: userDTO.bio,
           interests: userDTO.interests,
@@ -74,9 +78,9 @@ export class UserStorage {
   }
 
   async updateUserEmail(_id, email) {
-    return await this.collection.updateOne(
-      { _id: _id },
-      {
+    return await this.collection.updateOne({
+        _id: _id
+      }, {
         $set: {
           email: email,
         },
@@ -90,9 +94,9 @@ export class UserStorage {
     monthlyAttendance,
     lastDayGym
   ) {
-    return await this.collection.updateOne(
-      { _id: _id },
-      {
+    return await this.collection.updateOne({
+        _id: _id
+      }, {
         $set: {
           gymAttendanceMonthly: monthlyAttendance,
           gymAttendanceWeekly: weeklyAttendance,
@@ -104,6 +108,20 @@ export class UserStorage {
   }
 
   async deleteUser(id) {
-    return await this.collection.deleteOne({ _id: id });
+    return await this.collection.deleteOne({
+      _id: id
+    });
+  }
+
+  async resetWeeky(_id) {
+    return await this.collection.updateOne({
+        _id: _id
+      }, {
+        $set: {
+          gymAttendanceWeekly: 0,
+        },
+      },
+      true
+    );
   }
 }
