@@ -1,4 +1,6 @@
-import { userStorage } from "../Storage/index.js";
+import {
+  userStorage
+} from "../Storage/index.js";
 
 export class UserRepository {
   constructor() {
@@ -46,5 +48,9 @@ export class UserRepository {
   }
   async deleteUser(id) {
     return await this.storage.deleteUser(id);
+  }
+
+  async resetWeeky(id) {
+    return await this.storage.resetWeeky(id)
   }
 }
