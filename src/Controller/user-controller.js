@@ -219,9 +219,42 @@ async function ResetWeeklyValues(id) {
       return {
         user: "",
         err: new CustomError(
-          "the user couldnt be deleted",
+          "there was a problem reseting the weekly values",
           400,
-          "the user couldnt be deleted"
+          "there was a problem reseting the weekly values",
+        )
+      };
+    }
+
+    const user = await userRepository.getUserById(id)
+    return {
+      user: user,
+      err: null
+    }
+
+  } catch (err) {
+    return {
+      user: null,
+      err: new CustomError(
+        "an unexpected error ocurred",
+        400,
+        "an unexpected error ocurred",
+      )
+    };
+  }
+}
+
+async function ResetMonthlyValues(id) {
+  try {
+    const reseted = await userRepository.resetMonthly(id)
+
+    if (!reseted.acknowledged) {
+      return {
+        user: "",
+        err: new CustomError(
+          "there was a problem reseting the monthly values",
+          400,
+          "there was a problem reseting the monthly values",
         )
       };
     }
@@ -266,5 +299,6 @@ export {
   UpdateUser,
   UpdateUserEmail,
   DeleteUser,
-  ResetWeeklyValues
+  ResetWeeklyValues,
+  ResetMonthlyValues
 };

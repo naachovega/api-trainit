@@ -15,7 +15,8 @@ import {
   UpdateUser,
   UpdateUserEmail,
   DeleteUser,
-  ResetWeeklyValues
+  ResetWeeklyValues,
+  ResetMonthlyValues
 } from "./user-controller.js";
 import {
   Create,
@@ -74,5 +75,6 @@ export {
   UpdateUserEmail,
   DeleteUser,
   ResetWeeklyValues,
+  ResetMonthlyValues,
   Scan,
 };
