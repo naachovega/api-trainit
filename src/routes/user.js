@@ -6,7 +6,8 @@ import {
   UpdateUserEmail,
   DeleteUser,
   ResetWeeklyValues,
-  ResetMonthlyValues
+  ResetMonthlyValues,
+  ResetValues
 } from "../Controller/index.js";
 import {
   userExistIdParam,
@@ -150,6 +151,7 @@ userRouter.patch("/reset-weekly/:id", userExistIdParam, async (req, res) => {
   });
 
 })
+
 userRouter.patch("/reset-monthly/:id", userExistIdParam, async (req, res) => {
   const {
     id
@@ -169,6 +171,29 @@ userRouter.patch("/reset-monthly/:id", userExistIdParam, async (req, res) => {
   return res.status(200).json({
     data: user
   });
+
+})
+
+userRouter.patch("/reset/:id", userExistIdParam, async (req, res) => {
+  const {
+    id
+  } = req.params
+
+  const {
+    err,
+    user
+  } = await ResetValues(id)
+
+  if (err) {
+    return res.status(err.code).json({
+      message: err.message,
+    });
+  }
+
+  return res.status(200).json({
+    data: user
+  });
+
 
 })
 
