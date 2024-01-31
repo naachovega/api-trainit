@@ -1,5 +1,10 @@
-import { CustomError } from "../Models/Interfaces/Errors.js";
-import { authRepository, userRepository } from "../Repository/index.js";
+import {
+  CustomError
+} from "../Models/Interfaces/Errors.js";
+import {
+  authRepository,
+  userRepository
+} from "../Repository/index.js";
 
 async function AddRoutineToUser(userId, routineId) {
   try {
@@ -45,7 +50,10 @@ async function GetAllUsers() {
   try {
     const users = await userRepository.getUsers();
 
-    return { users: users, err: null };
+    return {
+      users: users,
+      err: null
+    };
   } catch (err) {
     return {
       users: null,
@@ -62,7 +70,10 @@ async function GetUserById(id) {
   try {
     const user = await userRepository.getUserById(id);
 
-    return { user: user, err: null };
+    return {
+      user: user,
+      err: null
+    };
   } catch (err) {
     return {
       user: null,
@@ -96,7 +107,10 @@ async function UpdateUser(id, userDTO) {
 
     user = await userRepository.getUserById(id);
 
-    return { user: user, err: null };
+    return {
+      user: user,
+      err: null
+    };
   } catch (err) {
     return {
       user: null,
@@ -152,7 +166,10 @@ async function UpdateUserEmail(id, email) {
 
     user = await userRepository.getUserById(id);
 
-    return { user: user, err: null };
+    return {
+      user: user,
+      err: null
+    };
   } catch (err) {
     return {
       user: null,
@@ -194,6 +211,39 @@ async function DeleteUser(id) {
   }
 }
 
+async function ResetWeeklyValues(id) {
+  try {
+    const reseted = await userRepository.resetWeeky(id)
+
+    if (!reseted.acknowledged) {
+      return {
+        user: "",
+        err: new CustomError(
+          "the user couldnt be deleted",
+          400,
+          "the user couldnt be deleted"
+        )
+      };
+    }
+
+    const user = await userRepository.getUserById(id)
+    return {
+      user: user,
+      err: null
+    }
+
+  } catch (err) {
+    return {
+      user: null,
+      err: new CustomError(
+        "an unexpected error ocurred",
+        500,
+        "an unexpected error ocurred"
+      )
+    };
+  }
+}
+
 function validateUserInformation(user, userDTO) {
   if (userDTO.interests) {
     user.interests = userDTO.interests;
@@ -215,5 +265,6 @@ export {
   GetUserById,
   UpdateUser,
   UpdateUserEmail,
-  DeleteUser
+  DeleteUser,
+  ResetWeeklyValues
 };

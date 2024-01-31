@@ -15,6 +15,7 @@ import {
   UpdateUser,
   UpdateUserEmail,
   DeleteUser,
+  ResetWeeklyValues
 } from "./user-controller.js";
 import {
   Create,
@@ -37,7 +38,9 @@ import {
   GetByRoutineId,
 } from "./exercise-controller.js";
 
-import { Scan } from "./qrscanner-controller.js";
+import {
+  Scan
+} from "./qrscanner-controller.js";
 
 export {
   createUserByEmail,
@@ -70,5 +73,6 @@ export {
   UpdateUser,
   UpdateUserEmail,
   DeleteUser,
+  ResetWeeklyValues,
   Scan,
 };
