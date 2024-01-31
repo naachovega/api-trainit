@@ -37,6 +37,8 @@ import {
   GetByRoutineId,
 } from "./exercise-controller.js";
 
+import { Scan } from "./qrscanner-controller.js";
+
 export {
   createUserByEmail,
   AddRoutineToUser,
@@ -68,4 +70,5 @@ export {
   UpdateUser,
   UpdateUserEmail,
   DeleteUser,
+  Scan,
 };

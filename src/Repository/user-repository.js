@@ -36,6 +36,14 @@ export class UserRepository {
   async updateUserEmail(id, email) {
     return await this.storage.updateUserEmail(id, email);
   }
+  async updateGymAttendance(_id, weeklyAttendance, monthlyAttendance, lastDayGym) {
+    return await this.storage.updateGymAttendance(
+      _id,
+      weeklyAttendance,
+      monthlyAttendance,
+      lastDayGym
+    );
+  }
   async deleteUser(id) {
     return await this.storage.deleteUser(id);
   }

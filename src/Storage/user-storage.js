@@ -84,6 +84,24 @@ export class UserStorage {
       true
     );
   }
+  async updateGymAttendance(
+    _id,
+    weeklyAttendance,
+    monthlyAttendance,
+    lastDayGym
+  ) {
+    return await this.collection.updateOne(
+      { _id: _id },
+      {
+        $set: {
+          gymAttendanceMonthly: monthlyAttendance,
+          gymAttendanceWeekly: weeklyAttendance,
+          lastDayGym: lastDayGym,
+        },
+      },
+      true
+    );
+  }
 
   async deleteUser(id) {
     return await this.collection.deleteOne({ _id: id });
