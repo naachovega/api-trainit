@@ -53,4 +53,7 @@ export class UserRepository {
   async resetWeeky(id) {
     return await this.storage.resetWeeky(id)
   }
+  async resetMonthly(id) {
+    return await this.storage.resetMonthly(id)
+  }
 }
