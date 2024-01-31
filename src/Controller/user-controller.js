@@ -277,6 +277,39 @@ async function ResetMonthlyValues(id) {
   }
 }
 
+async function ResetValues(id) {
+  try {
+    const reseted = await userRepository.resetValues(id)
+
+    if (!reseted.acknowledged) {
+      return {
+        user: "",
+        err: new CustomError(
+          "there was a problem reseting both values",
+          400,
+          "there was a problem reseting both values",
+        )
+      };
+    }
+
+    const user = await userRepository.getUserById(id)
+    return {
+      user: user,
+      err: null
+    }
+
+  } catch (err) {
+    return {
+      user: null,
+      err: new CustomError(
+        "an unexpected error ocurred",
+        500,
+        "an unexpected error ocurred"
+      )
+    };
+  }
+}
+
 function validateUserInformation(user, userDTO) {
   if (userDTO.interests) {
     user.interests = userDTO.interests;
@@ -300,5 +333,6 @@ export {
   UpdateUserEmail,
   DeleteUser,
   ResetWeeklyValues,
-  ResetMonthlyValues
+  ResetMonthlyValues,
+  ResetValues
 };
