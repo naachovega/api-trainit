@@ -124,12 +124,25 @@ export class UserStorage {
       true
     );
   }
-  
+
   async resetMonthly(_id) {
     return await this.collection.updateOne({
         _id: _id
       }, {
         $set: {
+          gymAttendanceMonthly: 0,
+        },
+      },
+      true
+    );
+  }
+
+  async resetValues(_id) {
+    return await this.collection.updateOne({
+        _id: _id
+      }, {
+        $set: {
+          gymAttendanceWeekly: 0,
           gymAttendanceMonthly: 0,
         },
       },
