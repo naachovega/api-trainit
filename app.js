@@ -1,5 +1,6 @@
 import express from "express";
 import pkg from "dotenv";
+import cors from 'cors'
 import {
   authRouter,
   routineRouter,
@@ -20,6 +21,7 @@ const port = process.env.PORT || 3000;
 const defaultEndpoint = "/api";
 
 app.use(express.json());
+app.use(cors())
 
 app.use(`${defaultEndpoint}/auth`, apiKeyMiddleware, authRouter);
 app.use(`${defaultEndpoint}/routine`, apiKeyMiddleware, routineRouter);
